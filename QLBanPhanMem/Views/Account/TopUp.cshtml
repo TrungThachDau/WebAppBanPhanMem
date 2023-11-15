@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Nạp tiền";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div style="width:300px">
+        <div class="card" data-bs-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            <div class="card-body">
+                <b>Giao dịch trực tiếp</b>
+            </div>
+        </div>
+        @ViewBag.notice
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+                <form style="display:flex" method="post" asp-action="TopUp">
+                    
+                    <div class="input-group mb-3" style="width:150px;margin-left:20px">
+
+                        <input type="number" name="soTien" class="form-control" placeholder="Nhập số tiền" aria-label="" aria-describedby="basic-addon1">
+                    </div>
+                    <button style="height:30px" type="submit" class="btn btn-primary">Nạp</button>
+                </form>
+            </div>
+        </div>
+        <br />
+        <div class="card" data-bs-toggle="collapse" href="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
+            <div class="card-body">
+                <b>Chuyển khoản ngân hàng</b>
+            </div>
+        </div>
+
+        <div class="collapse" id="collapseExample2">
+            <div class="card card-body">
+                STK: 032323232112
+                Ngân hàng: VCB
+            </div>
+        </div>
+    </div>
+

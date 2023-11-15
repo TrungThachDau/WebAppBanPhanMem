@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewData["Title"] = "PaymentSuccess";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="text-align:center;padding:20px">
+    
+    <h5>Thanh toán thành công!</h5>
+    <a>Xem đơn hàng của bạn hoặc trở về trang chủ.</a>
+    <div>
+        
+        <a href="/Account/OrderDetail/@ViewBag.maHD" class="btn btn-primary">Đơn hàng
+            </a>
+        <a href="/Home/Index" class="btn btn-secondary">Trang chủ</a>      
+    </div>
+</div>
+
