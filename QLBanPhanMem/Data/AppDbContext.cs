@@ -1,7 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using QLBanPhanMem.Models;
-using System.ComponentModel.DataAnnotations.Schema;
 
 public class AppDbContext : DbContext
 {
@@ -20,70 +18,73 @@ public class AppDbContext : DbContext
     public DbSet<KEYPMModel> KEYPMs { get; set; }
     public DbSet<ChiTietHoaDonModel> CTHDs { get; set; }
     public DbSet<ThongTinBoSungModel> TTBSs { get; set; }
-
+    
+    public DbSet<BannerKMModel> bannerKMModels { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<PhanMemModel>()
+        _ = modelBuilder.Entity<PhanMemModel>()
 
             .HasOne(p => p.NhaPhatHanh)
             .WithMany()
             .HasForeignKey(p => p.MANPH);
 
-        modelBuilder.Entity<ThuocLoaiPM>()
-
+        _ = modelBuilder.Entity<ThuocLoaiPM>()
             .HasKey(tlp => new { tlp.MAPM, tlp.MALOAI });
-
-        modelBuilder.Entity<ThuocLoaiPM>()
+        _ = modelBuilder.Entity<ThuocLoaiPM>()
             .HasOne(tlp => tlp.PhanMem)
             .WithMany()
             .HasForeignKey(tlp => tlp.MAPM);
-
-        modelBuilder.Entity<ThuocLoaiPM>()
+        _ = modelBuilder.Entity<ThuocLoaiPM>()
             .HasOne(tlp => tlp.LoaiPM)
             .WithMany()
             .HasForeignKey(tlp => tlp.MALOAI);
-        modelBuilder.Entity<CTHDKeyModel>()
-            .HasKey(ck => new { ck.MAHD, ck.MAPM, ck.MAKEY });
-        modelBuilder.Entity<CTHDKeyModel>()
+        _ = modelBuilder.Entity<CTHDKeyModel>()
+            .HasKey(ck=>ck.Id);
+        _ = modelBuilder.Entity<CTHDKeyModel>()
             .HasOne(ck => ck.HoaDon)
             .WithMany()
             .HasForeignKey(ck => ck.MAHD);
-        modelBuilder.Entity<CTHDKeyModel>()
+        _ = modelBuilder.Entity<CTHDKeyModel>()
             .HasOne(ck => ck.PhanMem)
             .WithMany()
             .HasForeignKey(ck => ck.MAPM);
-        modelBuilder.Entity<CTHDKeyModel>()
+        _ = modelBuilder.Entity<CTHDKeyModel>()
             .HasOne(ck => ck.KEYPM)
             .WithMany()
             .HasForeignKey(ck => ck.MAKEY);
-        modelBuilder.Entity<HoaDonModel>()
+        _ = modelBuilder.Entity<HoaDonModel>()
             .HasOne(hd => hd.Account)
             .WithMany()
             .HasForeignKey(hd => hd.MATK);
-        modelBuilder.Entity<KEYPMModel>()
+        _ = modelBuilder.Entity<KEYPMModel>()
             .HasOne(kp => kp.PhanMem)
             .WithMany()
             .HasForeignKey(kp => kp.MAPM);
-        modelBuilder.Entity<ChiTietHoaDonModel>()
-            .HasKey(cthd => new { cthd.MAHD, cthd.MAPM });
-        modelBuilder.Entity<ChiTietHoaDonModel>()
+        _ = modelBuilder.Entity<ChiTietHoaDonModel>()
+            .HasKey(cthd => new { cthd.Id});
+        _ = modelBuilder.Entity<ChiTietHoaDonModel>()
             .HasOne(cthd => cthd.HoaDon)
             .WithMany()
             .HasForeignKey(cthd => cthd.MAHD);
-        modelBuilder.Entity<ChiTietHoaDonModel>()
+        _ = modelBuilder.Entity<ChiTietHoaDonModel>()
             .HasOne(cthd => cthd.PhanMem)
             .WithMany()
             .HasForeignKey(cthd => cthd.MAPM);
-        modelBuilder.Entity<ThongTinBoSungModel>()
-            .HasKey(ttbs => new { ttbs.MAHD, ttbs.MAPM,ttbs.STT });
-        modelBuilder.Entity<ThongTinBoSungModel>()
+        _ = modelBuilder.Entity<ThongTinBoSungModel>()
+            .HasKey(ttbs => new { ttbs.MAHD, ttbs.MAPM, ttbs.STT });
+        _ = modelBuilder.Entity<ThongTinBoSungModel>()
             .HasOne(ttbs => ttbs.HoaDon)
             .WithMany()
             .HasForeignKey(ttbs => ttbs.MAHD);
-        modelBuilder.Entity<ThongTinBoSungModel>()
+        _ = modelBuilder.Entity<ThongTinBoSungModel>()
             .HasOne(ttbs => ttbs.PhanMem)
             .WithMany()
             .HasForeignKey(ttbs => ttbs.MAPM);
-        
+        _ = modelBuilder.Entity<BannerKMModel>()
+            .HasKey(bkm => new { bkm.MaBN, bkm.MAPM, bkm.HINHANH });
+        _ = modelBuilder.Entity<BannerKMModel>()
+            .HasOne(bkm => bkm.PhanMem)
+            .WithMany()
+            .HasForeignKey(bkm => bkm.MAPM);
     }
 }

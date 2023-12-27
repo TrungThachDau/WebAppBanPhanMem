@@ -5,7 +5,13 @@
 }
 
 
-
+<nav style="--bs-breadcrumb-divider: '>'; padding-top:20px" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Home/Index">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="/Account/Edit/@ViewBag.uid">Tài khoản</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Lịch sử đơn hàng</li>
+    </ol>
+</nav>
 <style>
     table {
         
@@ -29,7 +35,7 @@
         <ul class="list-group">
             <li class="list-group-item" aria-current="true"><a href="/Account/Edit/@Model.accountModel.Uid">Tài khoản</a></li>
             <li class="list-group-item active" aria-current="true"><a href="/Account/History/@Model.accountModel.Uid">Lịch sử đơn hàng</a></li>
-            <li class="list-group-item" aria-current="true"><a href="/Account/ChangePassword/@Model.accountModel.Uid">Mật khẩu</a></li>
+            <li class="list-group-item" aria-current="true"><a href="/Account/ChangePassword/@Model.accountModel.Uid">Mật khẩu và bảo mật</a></li>
             <li class="list-group-item" aria-current="true"><a asp-action="FavoriteProduct" asp-controller="Account">Sản phẩm yêu thích</a></li>
             <li class="list-group-item" aria-current="true"><a asp-action="ShareWebsite" asp-controller="Account">Giới thiệu bạn bè</a></li>
         </ul>

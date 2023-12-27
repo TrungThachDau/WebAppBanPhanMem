@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QLBanPhanMem.Models;
-using Microsoft.EntityFrameworkCore.Query;
-using System.Security.Policy;
-using System.Reflection;
 using Microsoft.CodeAnalysis;
 
 namespace QLBanPhanMem.Controllers
@@ -87,9 +80,7 @@ namespace QLBanPhanMem.Controllers
                     p.MOTA.Contains(search) || // Tìm theo mô tả
                     p.NhaPhatHanh.TENNPH.Contains(search) // Tìm theo tên nhà phát hành
                                                           // Tìm theo tên nhà phát hành
-                );
-
-                
+                );                
             }
             //Phân trang
             int ItemOfPage = 8; // Số sản phẩm trên mỗi trang
@@ -103,36 +94,25 @@ namespace QLBanPhanMem.Controllers
              // Sử dụng ItemOfPage thay vì TotalPage
             // Lọc theo loại
             if (!string.IsNullOrEmpty(type))
-            {
-                //query =
-                //    (IQueryable<PhanMemModel>)(from p in _context.PhanMems
-                //                               join t in _context.ThuocLoaiPMs on p.MAPM equals t.MAPM
-                //                               join l in _context.LoaiPMs on t.MALOAI equals l.MALOAI
-                //                               select new
-                //                               {
-                //                                   TenPhanMem = p.TENPM,
-                //                                   TenLoai = l.TENLOAI
-                //                               });
-                //Tìm theo loại phần mềm
-                query = query3.Where(p => p.LoaiPM.TENLOAI.Contains(type)).Select(p => p.PhanMem).Select(p => p);
-
+            {               
+                query = query3
+                .Where(p => p.LoaiPM.TENLOAI.Contains(type))
+                .Select(p => p.PhanMem)
+                .Select(p => p);
             }
             //Lọc theo nhà phát hành
             if (!string.IsNullOrEmpty(nph))
             {
-                query = query.Where(p =>
+                query = query
+                .Where(p =>
                         p.NhaPhatHanh.TENNPH.Contains(nph) // Tìm theo tên nhà phát hành
                     // Tìm theo tên nhà phát hành
-                );
-
-                
+                );           
             }
-            var result = await query.Skip(Start).Take(ItemOfPage).ToListAsync();
+            
+            var result = await query.OrderByDescending(query => query.MAPM).Skip(Start).Take(ItemOfPage).ToListAsync();
             return View(result);
         }
-
-
-
         // GET: Product/Details/5
         public async Task<IActionResult> Details(int? id,string MyData)
         {
@@ -157,161 +137,32 @@ namespace QLBanPhanMem.Controllers
             //Check so luong key con lai
             //Check số lượng key
                 var key = await _context.KEYPMs.FirstOrDefaultAsync(k => k.MAPM == id && k.TINHTRANG == 0);
-                if (key == null)
-                {
-                    
+            var count = await _context.KEYPMs.CountAsync(k => k.MAPM == id && k.TINHTRANG == 0);
+
+            if (key == null)
+                {                   
                     ViewBag.SoldOut = "Đã bán hết";
-                    //return RedirectToAction("Index", "Cart", new { MyData = ViewBag.MyData });
+                ViewBag.TonKho = 0;
                 }
                 else
                 {
                     ViewBag.SoldOut = "Còn hàng";
+                ViewBag.TonKho = count;
                 }
             HttpContext.Session.SetString("idspvuaxem", id.Value.ToString());
             ViewBag.idspvuaxem = HttpContext.Session.GetString("idspvuaxem");
-
             ViewBag.MyData = MyData;
             return View(phanMemModel);
         }
-
-        // GET: Product/Create
-        public IActionResult Create()
-        {
-            ViewBag.email = HttpContext.Session.GetString("email");
-            ViewBag.uid = HttpContext.Session.GetString("uid");
-            ViewBag.giohang = HttpContext.Session.GetString("dem");
-            ViewData["MANPH"] = new SelectList(_context.NhaPhatHanhs, "MANPH", "TENNPH");
-            return View();
-        }
-
-        // POST: Product/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MAPM,TENPM,MOTA,MANPH,NGAYPHATHANH,THOIHAN,DONVITHOIHAN,DONGIA,SOLUONG,HINHANH")] PhanMemModel phanMemModel)
-        {
-            
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    _context.Add(phanMemModel);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                }
-                ViewData["MANPH"] = new SelectList(_context.NhaPhatHanhs, "MANPH", "TENNPH", phanMemModel.MANPH);
-                return View(phanMemModel);
-            }
-            catch (Exception e)
-            {
-                return Problem(e.Message);
-            }
-        }
-
-        // GET: Product/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> AddToCart(int? id)
         {
             if (id == null || _context.PhanMems == null)
             {
                 return NotFound();
             }
-            if (_context.PhanMems == null)
-            {
-                return Problem("Entity set 'AppDbContext.PhanMems'  is null.");
-            }
-            var phanMemModel = await _context.PhanMems.FindAsync(id);
-            if (phanMemModel == null)
-            {
-                return NotFound();
-            }
-            ViewData["MANPH"] = new SelectList(_context.NhaPhatHanhs, "MANPH", "TENNPH", phanMemModel.MANPH);
-            return View(phanMemModel);
-        }
-
-        // POST: Product/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id, [Bind("MAPM,TENPM,MOTA,MANPH,NGAYPHATHANH,THOIHAN,DONVITHOIHAN,DONGIA,SOLUONG,HINHANH")] PhanMemModel phanMemModel)
-        {
-            if (id != phanMemModel.MAPM)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(phanMemModel);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PhanMemModelExists(phanMemModel.MAPM))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["MANPH"] = new SelectList(_context.NhaPhatHanhs, "MANPH", "TENNPH", phanMemModel.MANPH);
-            return View(phanMemModel);
-        }
-
-        // GET: Product/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.PhanMems == null)
-            {
-                return NotFound();
-            }
-
             var phanMemModel = await _context.PhanMems
                 .Include(p => p.NhaPhatHanh)
                 .FirstOrDefaultAsync(m => m.MAPM == id);
-            if (phanMemModel == null)
-            {
-                return NotFound();
-            }
-
-            return View(phanMemModel);
-        }
-
-        // POST: Product/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int? id)
-        {
-            if (_context.PhanMems == null)
-            {
-                return Problem("Entity set 'AppDbContext.PhanMems'  is null.");
-            }
-            var phanMemModel = await _context.PhanMems.FindAsync(id);
-            if (phanMemModel != null)
-            {
-                _context.PhanMems.Remove(phanMemModel);
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-        public IActionResult AddToCart(int? id)
-        {
-            if (id == null || _context.PhanMems == null)
-            {
-                return NotFound();
-            }
-
-            var phanMemModel = _context.PhanMems
-                .Include(p => p.NhaPhatHanh)
-                .FirstOrDefault(m => m.MAPM == id);
             if (phanMemModel == null)
             {
                 return NotFound();

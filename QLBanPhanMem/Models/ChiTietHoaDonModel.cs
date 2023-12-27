@@ -10,8 +10,10 @@ namespace QLBanPhanMem.Models
     {
         [Key]
         [Required]
+        public int? Id{get;set;}
+        [Required]
         public string? MAHD { get; set; }
-        [Key]
+        
         [Required]
         public int? MAPM { get; set; }
         [Required]

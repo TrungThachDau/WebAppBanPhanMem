@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QLBanPhanMem.Models;
@@ -30,11 +29,11 @@ namespace QLBanPhanMem.Controllers
             var result = new TrangChuViewModel()
                 {
                     ChiTietHoaDonModel = new List<ChiTietHoaDonModel>(),
-                    GroupedResult = new List<SoLuongPMCTHDModel>()
-            
+                    GroupedResult = new List<SoLuongPMCTHDModel>(),
+                    BannerKMModel = new List<BannerKMModel>()
                 };
 
-
+            
             // Lấy danh sách các nhà phát hành từ cơ sở dữ liệu
             var publishers = await _context.NhaPhatHanhs.ToListAsync();
             // Lấy danh sách loại pm
@@ -43,7 +42,7 @@ namespace QLBanPhanMem.Controllers
             var thuocloai = await _context.ThuocLoaiPMs.ToListAsync();
             SelectList loaipmList = new SelectList(loaipm, "MALOAI", "TENLOAI");
             ViewBag.LoaiPMList = loaipmList;
-
+            var banner = await _context.bannerKMModels.ToListAsync();
           
 
 
@@ -69,15 +68,12 @@ namespace QLBanPhanMem.Controllers
                 .Take(8)
                 .ToListAsync();
                 result.GroupedResult.AddRange(ChiTietHoaDonModel);
+                result.BannerKMModel.AddRange(banner);
 
                 return View(result);
         }
 
-        public IActionResult Privacy()
-        {
-            ViewBag.email = HttpContext.Session.GetString("email");
-            return View();
-        }
+        
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
@@ -86,7 +82,17 @@ namespace QLBanPhanMem.Controllers
         }
         public IActionResult PaymentSuccess()
         {
+           
+            ViewBag.email = HttpContext.Session.GetString("email");
+            ViewBag.uid = HttpContext.Session.GetString("uid");
             ViewBag.maHD = HttpContext.Session.GetString("maHD");
+            return View();
+        }
+        public IActionResult About()
+        {
+             
+            ViewBag.email = HttpContext.Session.GetString("email");
+            ViewBag.uid = HttpContext.Session.GetString("uid");
             return View();
         }
     }

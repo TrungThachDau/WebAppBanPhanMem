@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace QLBanPhanMem.Models
+﻿namespace QLBanPhanMem.Models
 {
     public class SoLuongPMCTHDModel
     {

@@ -10,6 +10,13 @@
 @{
     int stt = 1;
 }
+<nav style="--bs-breadcrumb-divider: '>'; padding-top:20px" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Home/Index">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="/Account/Edit/@ViewBag.uid">Tài khoản</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Giỏ hàng</li>
+    </ol>
+</nav>
 <div class="row" style="margin-top:20px;text-align:center">
     <h2>Giỏ hàng của bạn</h2>
         @if(ViewBag.dem==0||ViewBag.dem==null)
@@ -39,7 +46,6 @@
                     <tr>
                         <th>#</th>
                         <th>Sản phẩm</th>
-                        <th>Số lượng</th>
                         <th>Đơn giá</th>
                     </tr>
                     @foreach (var item in Model)
@@ -50,10 +56,7 @@
                             </td>
                             <td>
                                 <a asp-action="Details" asp-controller="Product" asp-route-id="@item.MAPM">@Html.DisplayFor(modelItem => item.PhanMem.TENPM)</a>
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.SOLUONG)
-                            </td>
+                            </td>                           
                             <td>
                                 @Html.DisplayFor(modelItem => item.THANHTIEN) ₫
                             </td>
@@ -87,18 +90,19 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            Phí vận chuyển sẽ được tính ở trang thanh toán.
+                            Tổng tiền đã bao gồm 8% VAT.
                             <br />
-                            Bạn cũng có thể nhập mã giảm giá ở trang thanh toán.
+                            Đơn hàng sẽ không được hoàn tiền nếu thanh toán.
                             
                        </td>
                     </tr>
                     <tr>
                         <td colspan="2">
+                            
                             <p><a style="color:red">@ViewBag.notice</a></p>
                             <form method="post" action="@Url.Action("ProcessPayment", "Cart")">
                                 <!-- Các trường thông tin thanh toán ở đây -->
-                                <input type="submit" value="Thanh toán" class="btn btn-primary" />
+                                <input type="submit" value="Thanh toán" class="btn btn-primary btn-block" />
                             </form>
                         </td>
                     </tr>

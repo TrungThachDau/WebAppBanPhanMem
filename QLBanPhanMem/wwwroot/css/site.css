@@ -1,4 +1,22 @@
-﻿.myfoother ul {
+﻿
+@font-face {
+    font-family: 'sf-pro';
+    src: url('../font/sf-pro.ttf') format('truetype');
+}
+/*@font-face {
+    font-family: 'sfprotext';
+    src: url('../font/sfprotext-bold.ttf') format('truetype');
+    font-weight:bold;
+}*/
+@font-face {
+    font-family: 'inter';
+    src: url('../font/inter-variablefont_slnt,wght.ttf') format('truetype');
+}
+body {
+    font-family: sf-pro, 'Segoe UI';
+    
+}
+.myfoother ul {
     list-style: none;
 }
 
@@ -20,6 +38,24 @@
     scrollbar-width: thin; /* Firefox: Đặt chiều rộng thanh cuộn là mảnh */
     scrollbar-color: transparent transparent; /* Firefox: Đặt màu thanh cuộn là trong suốt */
 }
+
+form.search_home .input-group {
+    line-height: 1;
+  
+    border-radius: 20px; /* Điều chỉnh giá trị theo mong muốn của bạn */
+    overflow: hidden; /* Để đảm bảo nếu có bất kỳ nội dung nào vượt ra khỏi phần tử này, nó sẽ được ẩn đi */
+}
+
+form.search_home .form-control {
+    border-top-left-radius: 20px; /* Bo tròn góc trên bên trái */
+    border-bottom-left-radius: 20px; /* Bo tròn góc dưới bên trái */
+}
+
+form.search_home .btn {
+    border-top-right-radius: 20px; /* Bo tròn góc trên bên phải */
+    border-bottom-right-radius: 20px; /* Bo tròn góc dưới bên phải */
+}
+
 
 
 

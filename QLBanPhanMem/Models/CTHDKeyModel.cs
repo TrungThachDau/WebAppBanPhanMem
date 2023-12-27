@@ -9,13 +9,15 @@ namespace QLBanPhanMem.Models
     {
         [Key]
         [Required]
+        public int? Id{get;set;}
+        [Required]
         [Column(Order = 1)]
         public string? MAHD { get; set; }
-        [Key]
+        
         [Required]
         [Column(Order = 2)]
         public int? MAPM { get; set; }
-        [Key]
+        
         [Required]
         [Column(Order = 3)]
         public int? MAKEY { get; set; }

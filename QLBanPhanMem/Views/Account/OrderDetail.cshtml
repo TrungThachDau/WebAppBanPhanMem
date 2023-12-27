@@ -1,10 +1,16 @@
 ﻿@model QLBanPhanMem.Models.OrderDetailViewModel;
 
 @{
-    ViewBag.Title = "title";
+    ViewBag.Title = "Lịch sử đơn hàng";
     Layout = "_Layout";
 }
-
+<nav style="--bs-breadcrumb-divider: '>'; padding-top:20px" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Home/Index">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="/Account/Edit/@ViewBag.uid">Tài khoản</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Lịch sử đơn hàng</li>
+    </ol>
+</nav>
 <div class="row">
     <div class="col-md-4">
         @* <ul class="list-group">
@@ -24,7 +30,7 @@
             <thead>
             <tr>
                 <th scope="col">Phần mềm</th>
-                <th scope="col">Số lượng</th>
+                
                 <th scope="col">Thành tiền</th>
                     
             </tr>
@@ -37,10 +43,7 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.PhanMem.TENPM)
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.SOLUONG)
-
-                    </td>
+                    
                         
                     <td>
                         @Html.DisplayFor(modelItem => item.THANHTIEN) ₫

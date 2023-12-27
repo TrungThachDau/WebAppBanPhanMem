@@ -2,7 +2,13 @@
     ViewData["Title"] = "Nạp tiền";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<nav style="--bs-breadcrumb-divider: '>'; padding-top:20px" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Home/Index">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="/Account/Edit/@ViewBag.uid">Tài khoản</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Nạp tiền</li>
+    </ol>
+</nav>
     <div style="width:300px">
         <div class="card" data-bs-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
             <div class="card-body">

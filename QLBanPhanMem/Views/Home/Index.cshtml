@@ -1,7 +1,7 @@
 ﻿@model QLBanPhanMem.Models.TrangChuViewModel;
 @{
    Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewData["Title"] = "Phần mềm bảng quyền";
+    ViewData["Title"] = "Phần mềm bản quyền";
 }
 <!DOCTYPE html>
 <html>
@@ -24,29 +24,60 @@
         <div class="col-6">
             <div id="carouselExampleIndicators" class="carousel slide carousel-dark">
                 <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    @{
+                        int dem = 0;
+                        foreach(var item in Model.BannerKMModel)
+                        {
+                            if(dem==0)
+                            {
+                                <button type="button" data-mdb-target="#carouselExampleIndicators" data-mdb-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                            }
+                            else
+                            {
+                                <button type="button" data-mdb-target="#carouselExampleIndicators" data-mdb-slide-to="@dem" aria-label="Slide @dem "></button>
+
+                            }
+                            dem++;
+                        }
+                    }
                 </div>
-                <div class="carousel-inner rounded">
-                    <div class="carousel-item active">
-                        <img src="~/image/Banner/banner_1.png" width="100%" height="300px" alt="...">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="~/image/Banner/banner_2.png" width="100%" height="300px" alt="...">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="~/image/Banner/banner_3.png" width="100%" height="300px" alt="...">
-                    </div>
+                <div class="carousel-inner rounded-3">
+                    @foreach(var item in Model.BannerKMModel)
+                    {
+                        var firstItem = Model.BannerKMModel.FirstOrDefault();
+                        if (item.MAPM == firstItem.MAPM.GetValueOrDefault())
+                        {
+                            <div class="carousel-item active">
+                                <a href="/Product/Details/@item.MAPM">
+                                    <img src="@item.HINHANH" width="100%" height="300px" alt="...">
+                                </a>
+                                
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="carousel-item">
+                                <a href="/Product/Details/@item.MAPM">
+                                    <img src="@item.HINHANH" width="100%" height="300px" alt="...">
+                                </a>
+
+                            </div>
+                        }
+
+                    }
+                    
+                    
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+
+                <button class="carousel-control-prev" type="button" data-mdb-target="#carouselExampleIndicators" data-mdb-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Previous</span>
                 </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <button class="carousel-control-next" type="button" data-mdb-target="#carouselExampleIndicators" data-mdb-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Next</span>
                 </button>
+
             </div>
         </div>
             <div class="col-3">
@@ -63,8 +94,8 @@
 
     
     <div class="col-12">
-        <h5>Sản phẩm nổi bật</h5>
-        <p>Danh sách những sản phẩm theo xu hướng mà có thể bạn sẽ thích</p>
+        <h5>Phần mềm nổi bật</h5>
+        <p>Danh sách những phần mềm theo xu hướng mà có thể bạn sẽ thích</p>
         <div class="card-container card-container-xh">
             @foreach (var item in Model.GroupedResult)
             {
@@ -131,32 +162,32 @@
         <div class="card-container card-container-dx">
             <div class="card card-dx">
                 <div class="card-body">
-                    <p class="card-text card-gia"><a href="/Product/Index?min=0&max=20000"><b>20.000đ</b></a></p>
+                    <p class="card-text card-gia"><a href="/Product/Index?min=1&max=20000"><b>20.000đ</b></a></p>
                 </div>
             </div>
             <div class="card card-dx">
                 <div class="card-body">
-                    <p class="card-text card-gia"><a href="/Product/Index?min=0&max=50000"><b>50.000đ</b></a></p>
+                    <p class="card-text card-gia"><a href="/Product/Index?min=1&max=50000"><b>50.000đ</b></a></p>
                 </div>
             </div>
             <div class="card card-dx">
                 <div class="card-body">
-                    <p class="card-text card-gia"><a href="/Product/Index?min=0&max=100000"><b>100.000đ</b></a></p>
+                    <p class="card-text card-gia"><a href="/Product/Index?min=1&max=100000"><b>100.000đ</b></a></p>
                 </div>
             </div>
             <div class="card card-dx">
                 <div class="card-body">
-                    <p class="card-text card-gia"><a href="/Product/Index?min=0&max=200000"><b>200.000đ</b></a></p>
+                    <p class="card-text card-gia"><a href="/Product/Index?min=1&max=200000"><b>200.000đ</b></a></p>
                 </div>
             </div>
             <div class="card card-dx">
                 <div class="card-body">
-                    <p class="card-text card-gia"><a href="/Product/Index?min=0&max=500000"><b>500.000đ</b></a></p>
+                    <p class="card-text card-gia"><a href="/Product/Index?min=1&max=500000"><b>500.000đ</b></a></p>
                 </div>
             </div>
             <div class="card card-dx">
                 <div class="card-body">
-                    <p class="card-text card-gia"><a href="/Product/Index?min=0&max=1000000"><b>1.000.000đ</b></a></p>
+                    <p class="card-text card-gia"><a href="/Product/Index?min=1&max=1000000"><b>1.000.000đ</b></a></p>
                 </div>
             </div>
         </div>
@@ -178,14 +209,14 @@
                                 Bạn chưa có tài khoản?
                             </p>
                             <p>
-                                Hãy tạo ngay một tài khoản để sử dụng đầy đủ các tính năng, tích lũy ưu đãi khi thanh toán các sản phẩm và tham gia vào chương trình Giới thiệu bạn bè nhận hoa hồng vĩnh viễn tại Up Modern.
+                                Hãy tạo ngay một tài khoản để sử dụng đầy đủ các tính năng, tích lũy ưu đãi khi thanh toán các Phần mềm và tham gia vào chương trình Giới thiệu bạn bè nhận hoa hồng vĩnh viễn tại Up Modern.
                             </p>
                             <p>
                                 <a asp-area="" asp-controller="Account" asp-action="SignIn" style="text-decoration: none">
-                                    <button class="btn btn-primary">Đăng ký ngay</button>
+                                    <button class="btn btn-primary">Đăng kí ngay</button>
                                 </a>
 
-                                Hoặc bạn đã có tài khoản?
+                            <p>Hoặc bạn đã có tài khoản?</p>
                                 <a asp-area="" asp-controller="Account" asp-action="SignIn" style="text-decoration: none">
                                     <span class="text-danger" style="font-size: 30px; font-weight: bold">Đăng nhập</span>
                                 </a>

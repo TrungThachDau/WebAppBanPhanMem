@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<QLBanPhanMem.Models.PhanMemModel>
 @{
-    ViewData["Title"] = "Tìm kiếm sản phẩm";
+    ViewData["Title"] = "Tìm phần mềm";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -14,7 +14,13 @@
     <link rel="stylesheet" href="~/css/productIndex.css" />
     <!-- Các thẻ khác trong phần đầu của trang (head) -->
 </head>
-<body>    
+<body>
+    <nav style="--bs-breadcrumb-divider: '>'; padding-top:20px" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/Home/Index">Trang chủ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Sản phẩm</li>
+        </ol>
+    </nav>
     <div class="row justify-content-center py-3">
         <div class="col-md-auto">
             <select class="form-select" aria-label="Default select example" id="manph" style="width:130px" name="manph" asp-items="@ViewBag.PublisherList">
@@ -43,7 +49,7 @@
         <div class="col-md-auto">       
             <form style="display: flex;">
                 <div class="input-group mb-3" style="width:150px; margin-left:20px;">
-                    <input type="number" id="min" name="min" class="form-control" placeholder="Giá từ" aria-describedby="basic-addon1">
+                    <input type="number" id="min" name="min" class="form-control" min="1" placeholder="Giá từ" aria-describedby="basic-addon1">
                 </div>
                 <div class="input-group mb-3" style="width:150px; margin-left:20px;">
                     <input type="number" id="max" name="max" class="form-control" placeholder="Đến" aria-describedby="basic-addon1">
@@ -57,17 +63,25 @@
     </div>
 
 
-
+    <hr />
     <div class="card-container">
         @foreach (var item in Model)
         {
-            <div class="card" onclick="navigateToLink('/Product/Details/@Html.DisplayFor(modelItem => item.MAPM)')">
-                <img src="@item.HINHANH" class="card-img-top" height="170" width="284">
-                <div class="card-body">
-                    <p class="card-text">@Html.DisplayFor(modelItem => item.TENPM)</p>
-                    <p class="card-text"><b>@Html.DisplayFor(modelItem => item.DONGIA) ₫</b></p>
+            if(item!=null)
+            {
+                <div class="card" onclick="navigateToLink('/Product/Details/@Html.DisplayFor(modelItem => item.MAPM)')">
+                    <img src="@item.HINHANH" class="card-img-top" height="170" width="284">
+                    <div class="card-body">
+                        <p class="card-text">@Html.DisplayFor(modelItem => item.TENPM)</p>
+                        <p class="card-text"><b>@Html.DisplayFor(modelItem => item.DONGIA) ₫</b></p>
+                    </div>
                 </div>
-            </div>
+            }
+            else
+            {
+                <h1>Không tìm thấy phần mềm</h1>
+            }
+            
         }
         <script>
             function navigateToLink(link) {
@@ -75,6 +89,7 @@
             }
         </script>
     </div>
+    <hr />
     <div class="pagination-container">
         <nav aria-label="">
             <ul class="pagination">
@@ -95,7 +110,7 @@
             </ul>
         </nav>
     </div>
-
+    
 
     <!-- Nội dung trang -->
     <script>
@@ -103,7 +118,15 @@
             //lấy text nhà phát hành
             var selectElement = document.getElementById("manph");
             var selectedOption = selectElement.options[selectElement.selectedIndex];
-            var selectedNPH = selectedOption.text;
+            if (selectedOption.text == "Nhà phát hành") {
+                var selectedNPH = "";
+            }
+            else
+{
+                var selectedNPH = selectedOption.text;
+            }
+
+            
             //lấy text thể loại
             var selectElement = document.getElementById("theloai");
             var selectedOption = selectElement.options[selectElement.selectedIndex];

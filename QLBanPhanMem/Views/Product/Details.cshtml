@@ -1,18 +1,40 @@
 ﻿@model QLBanPhanMem.Models.PhanMemModel
 
 @{
-    ViewData["Title"] = "Chi tiết";
+    ViewData["Title"] = @Html.DisplayFor(model => model.TENPM);
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<nav style="--bs-breadcrumb-divider: '>'; padding-top:20px" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Home/Index">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="/Product/Index">Sản phẩm</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Html.DisplayFor(model => model.TENPM)</li>
+    </ol>
+</nav>
 <div class="row justify-content-center py-3">
-    <div class="col-md-4">
+    <div class="col-md-4" style="padding-left:30px">
         <img src="@Model.HINHANH" class="img img-fluid rounded" width="500">
     </div>
     <div class="col-md-5">
         <p>Sản phẩm</p>
         <h2>@Html.DisplayFor(model => model.TENPM)</h2>
-        <p>Tình trạng: <a style="color:red">@ViewBag.SoldOut</a></p>
+        @if(ViewBag.SoldOut =="Còn hàng")
+        {
+            <p>Tình trạng: <a style="color:green">@ViewBag.SoldOut</a></p>
+            <p>Số lượng còn lại: <a style="color:green">@ViewBag.TonKho</a></p>
+
+
+        }
+        else
+        {
+            <p>Tình trạng: <a style="color:red">@ViewBag.SoldOut</a></p>
+            <p>Số lượng còn lại: <a style="color:red">@ViewBag.TonKho</a></p>
+
+        }
+
+
         <p>Thể loại: Phần mềm trả phí</p>
         <p>Giá: <span class="text-danger fw-bold">@Html.DisplayFor(model => model.DONGIA)</span>  ₫</p>
         <p>Nhà phát hành: @Html.DisplayFor(model => model.NhaPhatHanh.TENNPH)</p>
@@ -40,11 +62,17 @@
         @* <a href="@Url.Action("AddToCart", "Cart", new { productID = Model.MAPM, quantity =1 })" class="btn btn-primary" id="addToCartButton">Thêm vào giỏ</a> *@
         <button class="btn btn-primary" id="addToCartButton" onclick="addToCart()">Thêm vào giỏ</button>
 
-        
         <script>
             function addToCart() {
-                var quantity = $("#quantity").val()// Lấy giá trị từ ô nhập liệu
+                var quantity = $("#quantity").val(); // Lấy giá trị từ ô nhập liệu
                 var productID = @Model.MAPM; // Lấy giá trị từ Model.MAPM
+                var currentInventory = parseInt("@ViewBag.TonKho"); // Lấy giá trị tồn kho và chuyển về kiểu số nguyên
+
+                // Kiểm tra nếu số lượng thêm lớn hơn tồn kho
+                if (parseInt(quantity) > currentInventory) {
+                    alert("Số lượng thêm vào giỏ hàng lớn hơn tồn kho. Vui lòng giảm số lượng.");
+                    return;
+                }
 
                 // Tạo URL với tham số quantity và productID
                 var url = "@Url.Action("AddToCart", "Cart")" + "?productID=" + productID + "&quantity=" + quantity;
@@ -53,6 +81,7 @@
                 window.location.href = url;
             }
         </script>
+
 
 
         @* <script>
@@ -68,7 +97,24 @@
         </p>
     </div>
     <div class="col-md-3">
-            <p>Mã sản phẩm</p>
+        <p>Mã sản phẩm: @Html.DisplayFor(model => model.MAPM)</p>
+        <p>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://qlbanphanmem.azurewebsites.net/Product/Details/@Html.DisplayFor(model => model.MAPM)" target="_blank" rel="noopener noreferrer">
+                Chia sẻ qua Facebook
+            </a>
+        </p>
+        <p>
+            <a href="fb-messenger://share?link=https://qlbanphanmem.azurewebsites.net/Product/Details/@Html.DisplayFor(model => model.MAPM)" target="_blank" rel="noopener noreferrer" class="share-button">
+                Gửi qua Messenger
+            </a>
+        </p>
+        <p>
+            <a href="https://twitter.com/intent/tweet?url=https://qlbanphanmem.azurewebsites.net/Product/Details/@Html.DisplayFor(model => model.MAPM)" target="_blank" rel="noopener noreferrer" class="share-button twitter-button">
+                Chia sẻ qua X
+            </a>
+        </p>
+        
+        
     </div>
  </div>   
 @* </div>
